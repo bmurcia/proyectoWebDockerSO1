@@ -79,39 +79,6 @@ function createTable(event) {
     });
 }
 
-// Mostrar bases de datos y tablas en el sidebar
-function updateSidebar() {
-    const dbTree = document.getElementById('db-tree');
-    dbTree.innerHTML = '';
-
-    fetch('http://localhost:5000/list-databases')
-        .then(res => res.json())
-        .then(data => {
-            data.databases.forEach(db => {
-                const dbItem = document.createElement('li');
-                dbItem.textContent = db;
-
-                const tableList = document.createElement('ul');
-
-                fetch(`http://localhost:5000/list-tables/${db}`)
-                    .then(res => res.json())
-                    .then(tableData => {
-                        tableData.tables.forEach(table => {
-                            const tableItem = document.createElement('li');
-                            tableItem.textContent = table;
-                            tableList.appendChild(tableItem);
-                        });
-                    });
-
-                dbItem.appendChild(tableList);
-                dbTree.appendChild(dbItem);
-            });
-        })
-        .catch(err => {
-            console.error('Error al cargar sidebar:', err);
-        });
-}
-
 // Eventos al cargar la página y al enviar formularios
 window.addEventListener('DOMContentLoaded', updateSidebar);
 document.getElementById('create-db-form').addEventListener('submit', createDatabase);
