@@ -8,16 +8,13 @@
 </head>
 <body>
     <div class="main-layout">
-        <aside class="sidebar">
-            <h2>Object Explorer</h2>
-            <ul id="db-tree">
-                <!-- Aquí se cargará dinámicamente el árbol de bases de datos, tablas y columnas -->
-            </ul>
-        </aside>    
+        
         <main class="main-content">
             <header>
                 <h1>Grupo3 Management Studio</h1>
             </header>
+
+            <!-- Sección para Crear Base de Datos -->
             <section id="create-db-section">
                 <h2>Create Database</h2>
                 <form id="create-db-form">
@@ -26,18 +23,19 @@
                 </form>
             </section>
 
+            <!-- Sección para Crear Tabla -->
             <section id="create-table-section">
                 <h2>Create Table</h2>
                 <form id="create-table-form">
                     <input type="text" id="table-name" placeholder="Table Name" required>
                     <div id="fields-container"></div>
-                    <button type="button" onclick="addField()">Add</button>
+                    <button type="button" onclick="addField()">Add Field</button>
                     <button type="submit">Create Table</button>
                 </form>
             </section>
-        </main>        
+        </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-

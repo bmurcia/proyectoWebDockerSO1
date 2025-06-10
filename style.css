@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f3f3f3;
@@ -11,7 +11,7 @@ body{
 }
 
 .sidebar {
-    width: 250;
+    width: 250px;
     background-color: #e6e6e6;
     padding: 1rem;
     border-right: 1px solid #ccc;
@@ -60,18 +60,11 @@ form {
 }
 
 input[type="text"],
-select,
-textarea {
+select {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-}
-
-textarea {
-    height: 120px;
-    resize: vertical;
-    font-family: monospace;
 }
 
 button {
@@ -95,14 +88,7 @@ button:hover {
     margin-bottom: 0.5rem;
 }
 
-.field-group{
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.field-group input[type ="text"]{
+.field-group input[type="text"] {
     width: 150px;
 }
 
@@ -118,4 +104,3 @@ pre#sql-result {
   white-space: pre-wrap;
   font-family: Consolas, monospace;
 }
-
