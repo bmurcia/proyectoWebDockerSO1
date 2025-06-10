@@ -32,36 +32,7 @@ def create_database():
     except Exception as e:
         print("❌ Error al crear la base de datos:", e)
         return jsonify({"message": "Error al crear la base de datos.", "error": str(e)}), 500
-
-@app.route('/create-table', methods=['POST'])
-def create_table():
-    db_name = request.json.get('dbName')
-    table_name = request.json.get('tableName')
-    fields = request.json.get('fields')
-
-    try:
-        conn = get_db_connection()
-        conn.autocommit = True
-        cursor = conn.cursor()
-
-        cursor.execute(f"USE [{db_name}]")
-
-        table_fields = ', '.join([
-            f"[{field['fieldName']}] {field['fieldType']}" +
-            (" PRIMARY KEY" if field['isPrimaryKey'] else "") +
-            (" NULL" if field['isNull'] else " NOT NULL")
-            for field in fields
-        ])
-
-        cursor.execute(f"CREATE TABLE [{table_name}] ({table_fields})")
-        cursor.close()
-        conn.close()
-
-        return jsonify({"message": f"Tabla {table_name} creada exitosamente en {db_name}."}), 200
-    except Exception as e:
-        print("❌ Error al crear la tabla:", e)
-        return jsonify({"message": "Error al crear la tabla.", "error": str(e)}), 500
-
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

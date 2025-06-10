@@ -47,41 +47,8 @@ function createDatabase(event) {
     });
 }
 
-// Crear tabla
-function createTable(event) {
-    event.preventDefault();
-    const dbName = document.getElementById('db-name').value;
-    const tableName = document.getElementById('table-name').value;
-    const fields = [];
-
-    document.querySelectorAll('.field-group').forEach(field => {
-        const fieldName = field.querySelector('input[type="text"]').value;
-        const fieldType = field.querySelector('select').value;
-        const isPrimaryKey = field.querySelector('input[type="checkbox"]').checked;
-        const isNull = field.querySelectorAll('input[type="checkbox"]')[1].checked;
-
-        fields.push({ fieldName, fieldType, isPrimaryKey, isNull });
-    });
-
-    fetch('http://localhost:5000/create-table', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dbName, tableName, fields })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-        updateSidebar();
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Error al crear la tabla.');
-    });
-}
-
 // Eventos al cargar la página y al enviar formularios
-window.addEventListener('DOMContentLoaded', updateSidebar);
 document.getElementById('create-db-form').addEventListener('submit', createDatabase);
-document.getElementById('create-table-form').addEventListener('submit', createTable);
+
 
 
