@@ -1,0 +1,121 @@
+body{
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f3f3;
+    color: #333;
+}
+
+.main-layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250;
+    background-color: #e6e6e6;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #2b5797;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 10px;
+}
+
+.sidebar li {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1rem 2rem;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+header h1 {
+    color: #2b5797;
+    margin-bottom: 1rem;
+    font-size: 24px;
+}
+
+section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+input[type="text"],
+select,
+textarea {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+    font-family: monospace;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background-color: #2b5797;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #1a4173;
+}
+
+.field-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.field-group{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.field-group input[type ="text"]{
+    width: 150px;
+}
+
+.field-group select {
+    width: 120px;
+}
+
+pre#sql-result {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  font-family: Consolas, monospace;
+}
+
