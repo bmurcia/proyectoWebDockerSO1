@@ -39,7 +39,6 @@ function createDatabase(event) {
     .then(res => res.json())
     .then(data => {
         alert(data.message);
-        updateSidebar();
     })
     .catch(err => {
         console.error(err);
