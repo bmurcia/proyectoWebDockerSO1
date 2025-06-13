@@ -23,11 +23,13 @@ function addField() {
     const pkCheckbox = fieldGroup.querySelector('.pk-checkbox');
     const nullCheckbox = fieldGroup.querySelector('.null-checkbox');
 
-    pkCheckbox.addEventListener('change', ()=> {
-        if (pkCheckbox.checked){
-            nullCheckbox.checked = false;
-        }
-    })
+    if (pkCheckbox && nullCheckbox) {
+        pkCheckbox.addEventListener('change', () => {
+            if (pkCheckbox.checked) {
+                nullCheckbox.checked = false;
+            }
+        });
+    }
 }
 
 function handleTypeChange(select){
@@ -63,6 +65,8 @@ function createDatabase(event) {
     .then(res => res.json())
     .then(data => {
         alert(data.message);
+        document.getElementById('db-name').value = '';
+        loadDatabases();
     })
     .catch(err => {
         console.error(err);
@@ -80,13 +84,14 @@ function createTable(event) {
     const tableName = document.getElementById('table-name').value
     const fieldGroups = document.querySelectorAll('#fields-container .field-group');
 
+    const fieldNames = [];
     const fields = [];
     
     for(let group of fieldGroups){
         const nameInput = group.querySelector('input[type="text"]')
         const typeSelect = group.querySelector('select')
-        const pkCheckbox = group.querySelectorAll('input[type="checkbox"]')[0];
-        const nullCheckbox = group.querySelectorAll('input[type="checkbox"]')[1];
+        const pkCheckbox = group.querySelector('input[type="checkbox"]')[0];
+        const nullCheckbox = group.querySelector('input[type="checkbox"]')[1];
         
         let fieldName = nameInput.value.trim();
         let type = typeSelect.value;
@@ -96,10 +101,11 @@ function createTable(event) {
             return;
         }
 
-        if (fieldName.includes(fieldName.toLoweCasa())){
-            alert(`El nombre del campo "${fieldName}" esta duplicado.`);
-            return
+        if (fieldNames.includes(fieldName.toLowerCase())) {
+        alert(`El nombre del campo "${fieldName}" está duplicado.`);
+        return;
         }
+        fieldNames.push(fieldName.toLowerCase());
 
         // Validacones de los tipos de datos
 
@@ -121,16 +127,16 @@ function createTable(event) {
             type = `DECIMAL(${precision})`;
         }
 
-        if (pkCheckbox.checked && nullCheckbox.checked){
-            alert(`El campo "${fieldName} es clave primaria y no puede permitir nulos.`);
+        if (pkCheckbox && nullCheckbox && pkCheckbox.checked && nullCheckbox.checked) {
+            alert(`El campo "${fieldName}" es clave primaria y no puede permitir nulos.`);
             return;
         }
         
         fields.push({
-            name:fieldName,
+            name: fieldName,
             type,
-            primarykey: pkCheckbox.checked,
-            allowNull: nullCheckbox.checked
+            primarykey: pkCheckbox ? pkCheckbox.checked : false,
+            allowNull: nullCheckbox ? nullCheckbox.checked : true
         });
     }
 
@@ -143,6 +149,10 @@ function createTable(event) {
         .then(res => res.json())
         .then(data => {
             alert(data.message)
+            document.getElementById('table-name').value = '';
+            const fieldsContainer = document.getElementById('fields-container')
+            fieldsContainer.innerHTML = '';
+            addField();
         })
         .catch(err =>{
             console.error(err);
