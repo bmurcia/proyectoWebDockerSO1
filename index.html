@@ -1,12 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Platform</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grupo3 Management Studio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <div class="app-layout">
+    <nav class="sidebar" aria-label="Main Navigation">
+      <h2 class="sidebar-logo">Grupo3 Management</h2>
+      <ul class="sidebar-nav">
+        <li><button data-section="create-db-section" class="sidebar-btn active" aria-current="page">Crear Base de Datos</button></li>
+        <li><button data-section="create-table-section" class="sidebar-btn">Crear Tabla</button></li>
+        <li><button data-section="create-function-section" class="sidebar-btn">Crear Función</button></li>
+        <li><button data-section="create-trigger-section" class="sidebar-btn">Crear Trigger</button></li>
+        <li><button data-section="create-view-section" class="sidebar-btn">Crear Vista</button></li>
+        <li><button data-section="create-relationship-section" class="sidebar-btn">Crear Relación</button></li>
+      </ul>
+    </nav>
+
+    <main class="main-content" tabindex="-1">
+      <!-- Crear Base de Datos -->
+      <section id="create-db-section" class="section active" role="region" aria-labelledby="label-create-db">
+        <h2 id="label-create-db">Create Database</h2>
+        <form id="create-db-form">
+          <label for="db-name">Database Name:</label>
+          <input type="text" id="db-name" placeholder="Database Name" required autocomplete="off" />
+          <button type="submit">Create Database</button>
+        </form>
+      </section>
+
+      <!-- Crear Tabla -->
+      <section id="create-table-section" class="section" role="region" aria-labelledby="label-create-table">
+        <h2 id="label-create-table">Create Table</h2>
+        <form id="create-table-form">
+          <label for="db-select">Select Database:</label>
+          <select id="db-select" required aria-required="true">
+            <option value="">-- Elije una base de datos --</option>
+          </select>
+
+          <!-- Mostrar tablas existentes al seleccionar base -->
+          <div id="db-tables-list" aria-live="polite" style="margin-top: 1rem; font-size: 0.9rem; color: #444;">
+            <!-- Tablas existentes aparecerán aquí -->
+          </div>
+
+          <label for="table-name">Table Name:</label>
+          <input type="text" id="table-name" placeholder="Table Name" required autocomplete="off" />
+
+          <div id="fields-container" aria-live="polite" aria-relevant="additions removals"></div>
+          <button type="button" onclick="addField()" aria-label="Add field">Add Field</button>
+          <button type="submit">Create Table</button>
+        </form>
+      </section>
+
+      <!-- Crear Función -->
+      <section id="create-function-section" class="section" role="region" aria-labelledby="label-create-function">
+        <h2 id="label-create-function">Create Function</h2>
+        <form id="create-function-form">
+          <label for="function-name">Function Name:</label>
+          <input type="text" id="function-name" placeholder="Function Name" required autocomplete="off" />
+          <label for="function-params">Parameters:</label>
+          <input type="text" id="function-params" placeholder="Parameters (e.g., param1 INT, param2 VARCHAR)" required autocomplete="off" />
+          <label for="function-body">Function Body:</label>
+          <textarea id="function-body" placeholder="Function Body" required rows="6"></textarea>
+          <button type="submit">Create Function</button>
+        </form>
+      </section>
+
+      <!-- Crear Trigger -->
+      <section id="create-trigger-section" class="section" role="region" aria-labelledby="label-create-trigger">
+        <h2 id="label-create-trigger">Create Trigger</h2>
+        <form id="create-trigger-form">
+          <label for="trigger-name">Trigger Name:</label>
+          <input type="text" id="trigger-name" placeholder="Trigger Name" required autocomplete="off" />
+          <label for="trigger-table">Table:</label>
+          <input type="text" id="trigger-table" placeholder="Table Name" required autocomplete="off" />
+          <label for="trigger-event">Event:</label>
+          <select id="trigger-event" required aria-required="true">
+            <option value="INSERT">INSERT</option>
+            <option value="UPDATE">UPDATE</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          <label for="trigger-body">Trigger Body:</label>
+          <textarea id="trigger-body" placeholder="Trigger Body" required rows="6"></textarea>
+          <button type="submit">Create Trigger</button>
+        </form>
+      </section>
+
+      <!-- Crear Vista -->
+      <section id="create-view-section" class="section" role="region" aria-labelledby="label-create-view">
+        <h2 id="label-create-view">Create View</h2>
+        <form id="create-view-form">
+          <label for="view-name">View Name:</label>
+          <input type="text" id="view-name" placeholder="View Name" required autocomplete="off" />
+          <label for="view-query">SQL Query:</label>
+          <textarea id="view-query" placeholder="SELECT * FROM ..." required rows="6"></textarea>
+          <button type="submit">Create View</button>
+        </form>
+      </section>
+
+      <!-- Crear Relación -->
+      <section id="create-relationship-section" class="section" role="region" aria-labelledby="label-create-relationship">
+        <h2 id="label-create-relationship">Create Relationship</h2>
+        <form id="create-relationship-form">
+          <label for="rel-db-select">Select Database:</label>
+          <select id="rel-db-select" required aria-required="true">
+            <option value="">-- Elije una base de datos --</option>
+          </select>
+
+          <label for="parent-table-select">Parent Table:</label>
+          <select id="parent-table-select" required aria-required="true">
+            <option value="">-- Elije tabla padre --</option>
+          </select>
+
+          <label for="parent-field-select">Parent Field (Primary Key):</label>
+          <select id="parent-field-select" required aria-required="true">
+            <option value="">-- Elije campo padre --</option>
+          </select>
+
+          <label for="child-table-select">Child Table:</label>
+          <select id="child-table-select" required aria-required="true">
+            <option value="">-- Elije tabla hija --</option>
+          </select>
+
+          <label for="child-field-select">Child Field (Foreign Key):</label>
+          <select id="child-field-select" required aria-required="true">
+            <option value="">-- Elije campo hijo --</option>
+          </select>
+
+          <button type="submit">Create Relationship</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+=======
     <div class="main-layout">
         
         <main class="main-content">
@@ -44,5 +175,6 @@
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
