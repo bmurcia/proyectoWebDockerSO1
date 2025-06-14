@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div class="app-layout">
     <nav class="sidebar" aria-label="Main Navigation">
       <h2 class="sidebar-logo">Grupo3 Management</h2>
@@ -136,5 +137,44 @@
   </div>
 
   <script src="script.js"></script>
+=======
+    <div class="main-layout">
+        
+        <main class="main-content">
+            <header>
+                <h1>Grupo3 Management Studio</h1>
+            </header>
+
+            <!-- Sección para Crear Base de Datos -->
+            <section id="create-db-section">
+                <h2>Create Database</h2>
+                <form id="create-db-form">
+                    <input type="text" id="db-name" placeholder="Database Name" required />
+                    <button type="submit">Create Database</button>
+                </form>
+            </section>
+
+            <!-- Sección para Crear Tabla -->
+            <section id="create-table-section">
+                <h2>Create Table</h2>
+                <form id="create-table-form">
+                    <label for="db-select">Select Database:</label>
+                    <select id="db-select" required>
+                    <option value="">-- Elije una base de datos --</option>
+                    <!-- Opciones se llenan desde JS -->
+                    </select>
+
+                    <input type="text" id="table-name" placeholder="Table Name" required />
+                    
+                    <div id="fields-container"></div>
+                    <button type="button" onclick="addField()">Add Field</button>
+                    <button type="submit">Create Table</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
