@@ -1,0 +1,25 @@
+
+# Entornos virtuales
+venv/
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Docker
+*.log
+Dockerfile~
+
+# Visual Studio Code
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
