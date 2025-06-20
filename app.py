@@ -1,12 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS 
-from flask import make_response
 import pyodbc
 import config
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-
 
 # Conexión a SQL Server Express con el usuario sa
 def get_db_connection(database='master'):
@@ -20,35 +18,34 @@ def get_db_connection(database='master'):
         f'TrustServerCertificate=no;'
     )
 
+# Ruta raíz para verificar que el servicio está activo
+@app.route('/')
+def home():
+    return '🚀 API Flask corriendo correctamente en Render'
+
 # Crear Base de datos
 @app.route('/create-database', methods=['POST'])
 def create_database():
     db_name = request.json.get('dbName')
-
     try:
         conn = get_db_connection()
         conn.autocommit = True
         cursor = conn.cursor()
-
         cursor.execute(f"CREATE DATABASE [{db_name}]")
         cursor.close()
         conn.close()
         return jsonify({"message": f"Base de datos {db_name} creada exitosamente."}), 200
-    
     except Exception as e:
         print("❌ Error al crear la base de datos:", e)
         return jsonify({"message": "Error al crear la base de datos.", "error": str(e)}), 500
-    
-# Listar la base de datos
-@app.route('/databases', methods=['GET'])
 
+# Listar bases de datos
+@app.route('/databases', methods=['GET'])
 def list_databases():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')")
-
-
         dbs = [row.name for row in cursor.fetchall()]
         cursor.close()
         conn.close()
@@ -57,8 +54,6 @@ def list_databases():
         print("❌ error al listar datos", e)
         return jsonify({"message": "Error al obtener base de datos.", "error": str(e)}), 500
 
-
-    
 # Crear Tabla
 @app.route('/create-table', methods=['POST'])
 def create_table():
@@ -78,19 +73,17 @@ def create_table():
             ftype = field['type']
             nullable = 'NULL' if field['allowNull'] else 'NOT NULL'
             field_definition.append(f"[{name}] {ftype} {nullable}")
-
             if field['primarykey']:
                 primary_keys.append(name)
-        pk_clause = f", PRIMARY KEY ({', '.join([f'[{pk}]' for pk in primary_keys]) })" if primary_keys else ''
+
+        pk_clause = f", PRIMARY KEY ({', '.join([f'[{pk}]' for pk in primary_keys])})" if primary_keys else ''
         create_stmt = f"CREATE TABLE [{table_name}] ({', '.join(field_definition)}{pk_clause})"
 
         cursor.execute(create_stmt)
         conn.commit()
         cursor.close()
         conn.close()
-
-        return jsonify({"message": f"Tabla '{table_name}' creada correctamente en la base de datos '{db_name}'. "}), 200
-
+        return jsonify({"message": f"Tabla '{table_name}' creada correctamente en la base de datos '{db_name}'."}), 200
     except Exception as e:
         print("❌ Error al crear la tabla", e)
         return jsonify({"message": "Error al crear la tabla.", "error": str(e)}), 500             
@@ -106,7 +99,6 @@ def get_tables(db_name):
         cursor.close()
         conn.close()
         return jsonify({"tables": tables}), 200
-
     except Exception as e:
         return jsonify({"message": "Error al obtener la tabla", "error": str(e)}), 500    
 
@@ -124,9 +116,7 @@ def get_columns(db_name, table_name):
     except Exception as e:
         return jsonify({"message": "Error al obtener columnas", "error": str(e)}), 500
 
-
-
-
+# Crear relación entre tablas
 @app.route('/create-relationship', methods=['POST', 'OPTIONS'])
 def create_relationship():
     if request.method == 'OPTIONS':
@@ -138,7 +128,6 @@ def create_relationship():
 
     data = request.get_json()
     print("📥 POST recibido:", data)
-
     db_name = data.get('dbname')
     parent_table = data.get('parentTable')
     parent_field = data.get('parentField')
@@ -148,7 +137,6 @@ def create_relationship():
     try:
         conn = get_db_connection(db_name)
         cursor = conn.cursor()
-
         fk_name = f"FK_{child_table}_{parent_table}"
         query = f"""
         ALTER TABLE [{child_table}]
@@ -160,44 +148,33 @@ def create_relationship():
         conn.commit()
         cursor.close()
         conn.close()
-
         return jsonify({"message": f"Relación creada exitosamente entre {parent_table} y {child_table}."}), 200
-
     except Exception as e:
         print("❌ Error al crear la relación:", e)
         return jsonify({"message": "Error al crear la relación", "error": str(e)}), 500
 
-
-# Querys
+# Ejecutar consulta
 @app.route('/query', methods=['POST'])
 def run_query():
     data = request.json
     database = data.get('database')
     query = data.get('query')
-
     try:
         conn = get_db_connection(database)
         cursor = conn.cursor()
         cursor.execute(query)
-
         if cursor.description:  
             columns = [col[0] for col in cursor.description]
             rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
         else:
             conn.commit()
             rows = [{"message": "Consulta ejecutada correctamente"}]
-
         cursor.close()
         conn.close()
         return jsonify({"results": rows}), 200
-
     except Exception as e:
         print("❌ Error al ejecutar consulta:", e)
         return jsonify({"error": str(e)}), 500
 
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=config.FLASK_PORT)
-
-
-
