@@ -1,0 +1,15 @@
+# Exported from Render on 2025-06-20T18:58:15Z
+services:
+- type: web
+  name: proyectoWebDockerSO1
+  runtime: python
+  repo: https://github.com/04Davi/proyectoWebDockerSO1
+  plan: free
+  envVars:
+  - key: Docker
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: CMD ["python", "app.py"]
+  autoDeployTrigger: commit
+version: "1"
