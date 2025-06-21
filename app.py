@@ -196,6 +196,23 @@ def run_query():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/')
+def home():
+    return '''
+    <h2>✅ API Activa</h2>
+    <p>Tu backend Flask está desplegado correctamente en Render.</p>
+    <p>Rutas disponibles:</p>
+    <ul>
+        <li>POST /create-database</li>
+        <li>GET /databases</li>
+        <li>POST /create-table</li>
+        <li>GET /tables/&lt;db_name&gt;</li>
+        <li>GET /columns/&lt;db_name&gt;/&lt;table_name&gt;</li>
+        <li>POST /create-relationship</li>
+        <li>POST /query</li>
+    </ul>
+    '''
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=config.FLASK_PORT)
 
