@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask import render_template
 from flask_cors import CORS 
 from flask import make_response
 import pyodbc
@@ -198,23 +199,7 @@ def run_query():
 
 @app.route('/')
 def home():
-    return '''
-    <h2>✅ API Activa</h2>
-    <p>Tu backend Flask está desplegado correctamente en Render.</p>
-    <p>Rutas disponibles:</p>
-    <ul>
-        <li>POST /create-database</li>
-        <li>GET /databases</li>
-        <li>POST /create-table</li>
-        <li>GET /tables/&lt;db_name&gt;</li>
-        <li>GET /columns/&lt;db_name&gt;/&lt;table_name&gt;</li>
-        <li>POST /create-relationship</li>
-        <li>POST /query</li>
-    </ul>
-    '''
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=config.FLASK_PORT)
-
-
-
