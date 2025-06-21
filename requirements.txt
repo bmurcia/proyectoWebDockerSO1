@@ -2,4 +2,8 @@ Flask
 flask-cors
 python-dotenv
 pyodbc
+<<<<<<< HEAD
 Jinja2>=3.0.0
+=======
+Jinja2>=3.0
+>>>>>>> 4e4c4f05284f883b0a34a930da1739540b1ac5bd
