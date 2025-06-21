@@ -1,4 +1,4 @@
-import { createDatabase, loadDatabases } from './database.js';
+import { loadDatabases } from './database.js';
 import { createTable, addField } from './table.js';
 import { setupNavigation } from './navigation.js';
 import { loadTables, setupRelationShipEvents, createRelationship } from './relationship.js';
