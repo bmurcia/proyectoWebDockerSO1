@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+from flask import Flask, request, jsonify
+from flask import render_template
+=======
 from flask import Flask, request, jsonify, render_template, url_for
+>>>>>>> 4e4c4f05284f883b0a34a930da1739540b1ac5bd
 from flask_cors import CORS 
 from flask import make_response
 import pyodbc
